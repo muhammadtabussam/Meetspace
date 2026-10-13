@@ -206,15 +206,15 @@ To enable live AI replies, copy `server/.env.example` to `server/.env`, set `AI_
 
 ## 6. Deploying Publicly on Render
 
-The repository includes a `render.yaml` Blueprint for one public Node web service. It builds the React app and serves it from Express on the same HTTPS origin, so sign-in cookies, API calls, and Socket.IO work from phones and computers outside your Wi-Fi network.
+The repository includes a `render.yaml` Blueprint for one public Node web service on Render's **Free** plan. It builds the React app and serves it from Express on the same HTTPS origin, so sign-in cookies, API calls, and Socket.IO work from phones and computers outside your Wi-Fi network.
 
 1. Push this project to a GitHub repository and sign in to [Render](https://render.com).
 2. In the Render dashboard, choose **New → Blueprint**, connect the repository, and deploy `render.yaml`.
-3. The Blueprint attaches a 1 GB persistent disk at `/var/data`. Render persistent disks require a paid web-service plan. Keep this disk attached: the MeetSpace account and session store is written there, and the default service filesystem is temporary.
+3. Review the Blueprint and confirm that its service plan is **Free**. It does not create a paid persistent disk.
 4. After deploy completes, open the HTTPS `onrender.com` URL shown by Render. Create your account there and share meeting links from that public URL—not from `localhost` or a private Wi-Fi address.
-5. In the service's Environment settings, set `AI_API_KEY` if live AI responses are needed. Built-in MeetSpace help works without it. Configure `TURN_SERVER_URL`, `TURN_USERNAME`, and `TURN_CREDENTIAL` with a TURN provider for more reliable audio/video across restrictive mobile networks and firewalls. Save the values as Render secrets; do not commit them.
+5. The free service sleeps after about 15 minutes with no incoming activity; it is not blocked. The next visit or Socket.IO connection wakes it, which can take about a minute. The free filesystem is temporary, so MeetSpace accounts and sessions may disappear after a restart or sleep. Users can create their accounts again. Meeting rooms are in memory and end when the service restarts. Built-in MeetSpace help works without an AI key; TURN settings can be added as secrets later if needed.
 
-This Blueprint intentionally runs one service instance: meeting rooms and signaling state are currently held in server memory, so multiple instances would not share a meeting. The persistent disk preserves accounts between restarts and deploys, but is not a substitute for a shared database or backups. Render's free web-service plan cannot use the persistent disk needed to preserve accounts.
+This Blueprint intentionally runs one service instance: meeting rooms and signaling state are currently held in server memory, so multiple instances would not share a meeting. Free-plan usage, bandwidth, and build limits apply; check Render's dashboard for current allowances.
 
 ## 7. Production Deployment & TURN Configuration
 
