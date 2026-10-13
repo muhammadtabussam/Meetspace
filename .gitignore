@@ -1,0 +1,12 @@
+node_modules/
+server/node_modules/
+client/node_modules/
+client/dist/
+server/.env
+server/data/
+client/.env
+.env
+.DS_Store
+npm-debug.log*
+.server-port
+.client-port

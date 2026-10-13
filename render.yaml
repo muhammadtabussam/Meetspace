@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: meetspace
+    runtime: node
+    plan: starter
+    buildCommand: npm ci --prefix server && npm ci --prefix client && npm run build --prefix client
+    startCommand: npm start --prefix server
+    healthCheckPath: /health
+    disk:
+      name: meetspace-user-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: AUTH_STORE_PATH
+        value: /var/data/auth-store.json
+      - key: AI_API_KEY
+        sync: false
+      - key: TURN_SERVER_URL
+        sync: false
+      - key: TURN_USERNAME
+        sync: false
+      - key: TURN_CREDENTIAL
+        sync: false
